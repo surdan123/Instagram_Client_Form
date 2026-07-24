@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Services Career Information Session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2438;
+    --navy-deep:#081826;
+    --teal:#1B4B5A;
+    --gold:#C9A227;
+    --gold-light:#E4C866;
+    --cream:#F7F5EF;
+    --slate:#4A5568;
+    --slate-light:#8892A0;
+    --line:#DCD8CC;
+    --ok:#2F7D5A;
+    --err:#B0463C;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--navy);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 16px 80px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+
+  /* ---------- Ticket header ---------- */
+  .ticket{
+    background:linear-gradient(155deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:var(--cream);
+    border-radius:18px;
+    padding:36px 32px 28px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 18px 40px -18px rgba(15,36,56,0.55);
+  }
+  .ticket::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 18% 30%, rgba(201,162,39,0.18), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(27,75,90,0.5), transparent 50%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold-light);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:rgba(228,200,102,0.35);}
+  .ticket h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(28px,5.5vw,38px);
+    line-height:1.08;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  .ticket p.lede{
+    font-size:15.5px;
+    line-height:1.55;
+    color:#C9D2DA;
+    max-width:46ch;
+    margin:0 0 22px;
+  }
+  .stub-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    border-top:1px dashed rgba(228,200,102,0.35);
+    padding-top:18px;
+  }
+  .stub{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:.03em;
+    color:var(--cream);
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(228,200,102,0.25);
+    padding:7px 12px;
+    border-radius:100px;
+  }
+  .stub b{color:var(--gold-light);font-weight:700;}
+
+  /* perforation notches */
+  .notch{position:absolute;width:22px;height:22px;background:var(--cream);border-radius:50%;top:calc(100% - 11px);}
+  .notch.l{left:-11px;}
+  .notch.r{right:-11px;}
+
+  /* ---------- Card ---------- */
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    margin-top:28px;
+    padding:8px;
+  }
+  .section{padding:26px 24px;}
+  .section + .section{border-top:1px solid var(--line);}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .section-num{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:4px;
+    padding:1px 7px;
+  }
+  .section-title{
+    font-family:'Fraunces',serif;
+    font-size:19px;
+    font-weight:600;
+    color:var(--navy);
+  }
+
+  .field{margin-bottom:20px;}
+  .field:last-child{margin-bottom:0;}
+  label.q{
+    display:block;
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--navy);
+    margin-bottom:9px;
+  }
+  label.q .req{color:var(--err);margin-left:3px;font-weight:600;}
+  .hint{
+    font-size:12.5px;
+    color:var(--slate-light);
+    font-weight:400;
+    display:block;
+    margin-top:3px;
+  }
+
+  input[type="text"], input[type="email"], input[type="tel"], textarea{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    color:var(--navy);
+    background:var(--cream);
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:12px 14px;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+  }
+  textarea{resize:vertical;min-height:84px;}
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--teal);
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(27,75,90,0.12);
+  }
+  input.invalid, textarea.invalid{border-color:var(--err);background:#FBF1F0;}
+
+  /* option groups (radio + checkbox) */
+  .options{display:flex;flex-direction:column;gap:8px;}
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    border:1.5px solid var(--line);
+    background:var(--cream);
+    border-radius:10px;
+    padding:11px 14px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .opt:hover{border-color:var(--teal);}
+  .opt input{
+    appearance:none;
+    -webkit-appearance:none;
+    flex:0 0 auto;
+    width:18px;height:18px;
+    border:1.8px solid var(--slate-light);
+    background:#fff;
+    display:grid;
+    place-content:center;
+    cursor:pointer;
+    transition:border-color .15s;
+  }
+  .opt input[type="radio"]{border-radius:50%;}
+  .opt input[type="checkbox"]{border-radius:5px;}
+  .opt input::before{
+    content:"";
+    width:9px;height:9px;
+    border-radius:50%;
+    background:var(--teal);
+    transform:scale(0);
+    transition:transform .12s ease;
+  }
+  .opt input[type="checkbox"]::before{
+    width:10px;height:10px;
+    border-radius:2px;
+    background:var(--gold);
+  }
+  .opt input:checked::before{transform:scale(1);}
+  .opt input:checked{border-color:var(--teal);}
+  .opt input[type="checkbox"]:checked{border-color:var(--gold);}
+  .opt.checked{border-color:var(--teal);background:#EEF3F3;}
+  .opt input[type="checkbox"] ~ span{}
+  .opt span{font-size:14.5px;color:var(--navy);}
+
+  .consent{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:var(--cream);
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+  }
+  .consent input{
+    margin-top:2px;
+    flex:0 0 auto;
+    width:18px;height:18px;
+    border-radius:5px;
+    border:1.8px solid var(--slate-light);
+    appearance:none;-webkit-appearance:none;
+    display:grid;place-content:center;
+    cursor:pointer;
+  }
+  .consent input::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--teal);transform:scale(0);transition:transform .12s;}
+  .consent input:checked::before{transform:scale(1);}
+  .consent input:checked{border-color:var(--teal);}
+  .consent p{margin:0;font-size:13px;line-height:1.55;color:var(--slate);}
+
+  .errline{
+    font-size:12.5px;
+    color:var(--err);
+    margin-top:7px;
+    display:none;
+  }
+  .errline.show{display:block;}
+
+  .submit-wrap{padding:22px 24px 26px;}
+  button.submit{
+    width:100%;
+    background:var(--navy);
+    color:var(--cream);
+    border:none;
+    border-radius:10px;
+    padding:16px 20px;
+    font-family:'Inter',sans-serif;
+    font-size:15.5px;
+    font-weight:700;
+    letter-spacing:.01em;
+    cursor:pointer;
+    transition:background .15s, transform .1s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  button.submit:hover{background:var(--teal);}
+  button.submit:active{transform:scale(0.99);}
+  .fine{
+    text-align:center;
+    font-size:12px;
+    color:var(--slate-light);
+    margin-top:12px;
+  }
+
+  /* ---------- Confirmation ---------- */
+  .confirm{
+    display:none;
+    background:linear-gradient(155deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:var(--cream);
+    border-radius:18px;
+    padding:44px 32px;
+    text-align:center;
+    margin-top:28px;
+  }
+  .confirm.show{display:block;animation:rise .5s ease;}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .stamp{
+    width:56px;height:56px;
+    border-radius:50%;
+    border:2px solid var(--gold-light);
+    display:grid;place-content:center;
+    margin:0 auto 18px;
+  }
+  .confirm h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:26px;
+    margin:0 0 12px;
+  }
+  .confirm p{
+    color:#C9D2DA;
+    font-size:14.5px;
+    line-height:1.6;
+    max-width:38ch;
+    margin:0 auto;
+  }
+  .card.hide, .ticket.hide{display:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    .confirm.show{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="ticket" id="ticket">
+    <div class="eyebrow">Free · No obligation</div>
+    <h1>Financial Services Career Information Session</h1>
+    <p class="lede">Learn about licensing, training and mentorship, and how part‑time or full‑time opportunities in financial services actually work — before you decide anything.</p>
+    <div class="stub-row">
+      <div class="stub">Licensing <b>&amp;</b> Requirements</div>
+      <div class="stub">Training <b>&amp;</b> Mentorship</div>
+      <div class="stub">Compensation <b>Structure</b></div>
+    </div>
+    <div class="notch l"></div>
+    <div class="notch r"></div>
+  </div>
+
+  <form class="card" id="form" novalidate>
+
+    <div class="section">
+      <div class="section-head"><span class="section-num">01</span><span class="section-title">Your details</span></div>
+
+      <div class="field">
+        <label class="q" for="fullName">Full name<span class="req">*</span></label>
+        <input type="text" id="fullName" name="fullName" required>
+        <div class="errline">Please enter your full name.</div>
+      </div>
+
+      <div class="field">
+        <label class="q" for="email">Email address<span class="req">*</span></label>
+        <input type="email" id="email" name="email" required>
+        <div class="errline">Please enter a valid email address.</div>
+      </div>
+
+      <div class="field">
+        <label class="q" for="phone">Phone number<span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" required>
+        <div class="errline">Please enter your phone number.</div>
+      </div>
+
+      <div class="field">
+        <label class="q" for="location">City &amp; province<span class="req">*</span><span class="hint">Example: Mississauga, ON</span></label>
+        <input type="text" id="location" name="location" required>
+        <div class="errline">Please enter your city and province.</div>
+      </div>
+
+      <div class="field" data-group="inCanada">
+        <label class="q">Are you currently in Canada?<span class="req">*</span></label>
+        <div class="options">
+          <label class="opt"><input type="radio" name="inCanada" value="Yes" required><span>Yes</span></label>
+          <label class="opt"><input type="radio" name="inCanada" value="No"><span>No</span></label>
+        </div>
+        <div class="errline">Please select one option.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-num">02</span><span class="section-title">Your interests</span></div>
+
+      <div class="field" data-group="interests">
+        <label class="q">What interests you most?<span class="req">*</span><span class="hint">Select all that apply</span></label>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="interests" value="Additional income opportunity"><span>Additional income opportunity</span></label>
+          <label class="opt"><input type="checkbox" name="interests" value="Career change"><span>Career change</span></label>
+          <label class="opt"><input type="checkbox" name="interests" value="Financial education"><span>Financial education</span></label>
+          <label class="opt"><input type="checkbox" name="interests" value="Helping families"><span>Helping families</span></label>
+          <label class="opt"><input type="checkbox" name="interests" value="Business ownership"><span>Business ownership</span></label>
+          <label class="opt"><input type="checkbox" name="interests" value="Learning more"><span>Learning more</span></label>
+        </div>
+        <div class="errline">Please select at least one option.</div>
+      </div>
+
+      <div class="field" data-group="commitment">
+        <label class="q">Are you looking for:<span class="req">*</span></label>
+        <div class="options">
+          <label class="opt"><input type="radio" name="commitment" value="Part-time" required><span>Part-time</span></label>
+          <label class="opt"><input type="radio" name="commitment" value="Full-time"><span>Full-time</span></label>
+          <label class="opt"><input type="radio" name="commitment" value="Just exploring"><span>Just exploring</span></label>
+        </div>
+        <div class="errline">Please select one option.</div>
+      </div>
+
+      <div class="field" data-group="experience">
+        <label class="q">Have you worked in financial services before?</label>
+        <div class="options">
+          <label class="opt"><input type="radio" name="experience" value="Yes"><span>Yes</span></label>
+          <label class="opt"><input type="radio" name="experience" value="No"><span>No</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-num">03</span><span class="section-title">Availability</span></div>
+
+      <div class="field" data-group="availability">
+        <label class="q">When are you available for a short call?</label>
+        <div class="options">
+          <label class="opt"><input type="radio" name="availability" value="Weekday mornings"><span>Weekday mornings</span></label>
+          <label class="opt"><input type="radio" name="availability" value="Weekday afternoons"><span>Weekday afternoons</span></label>
+          <label class="opt"><input type="radio" name="availability" value="Weekday evenings"><span>Weekday evenings</span></label>
+          <label class="opt"><input type="radio" name="availability" value="Weekends"><span>Weekends</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q" for="notes">Anything you'd like us to know?</label>
+        <textarea id="notes" name="notes"></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="field">
+        <label class="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <p>I understand this is a free informational session about a licensed financial-services opportunity. Submitting this form does not create any obligation to join, purchase any products, or enter into a business relationship.<span class="req">*</span></p>
+        </label>
+        <div class="errline" id="consentErr">Please confirm you understand before submitting.</div>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="submit">Reserve my spot →</button>
+      <div class="fine">We'll be in touch within 24–48 hours.</div>
+    </div>
+  </form>
+
+  <div class="confirm" id="confirm">
+    <div class="stamp">🎉</div>
+    <h2>Thank you for your interest!</h2>
+    <p>We've received your information and will contact you within 24–48 hours to schedule your free information session. We look forward to speaking with you!</p>
+  </div>
+
+</div>
+
+<script>
+const form = document.getElementById('form');
+const ticket = document.getElementById('ticket');
+const confirmBox = document.getElementById('confirm');
+
+// visual feedback for radio/checkbox rows
+document.querySelectorAll('.opt input').forEach(inp => {
+  inp.addEventListener('change', () => {
+    if(inp.type === 'radio'){
+      document.querySelectorAll(`.opt input[name="${inp.name}"]`).forEach(sib => {
+        sib.closest('.opt').classList.toggle('checked', sib.checked);
+      });
+    } else {
+      inp.closest('.opt').classList.toggle('checked', inp.checked);
+    }
+  });
+});
+
+function setError(el, show){
+  const errline = el.parentElement.querySelector('.errline') || el.parentElement.parentElement.querySelector('.errline');
+  if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+    el.classList.toggle('invalid', show);
+  }
+  if(errline) errline.classList.toggle('show', show);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  let valid = true;
+
+  ['fullName','email','phone','location'].forEach(id => {
+    const el = document.getElementById(id);
+    const ok = el.value.trim().length > 0 && (id !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+    setError(el, !ok);
+    if(!ok) valid = false;
+  });
+
+  ['inCanada','commitment'].forEach(name => {
+    const group = document.querySelector(`[data-group="${name}"]`);
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    setError(group.querySelector('.options'), !checked);
+    if(!checked) valid = false;
+  });
+
+  const interestsGroup = document.querySelector('[data-group="interests"]');
+  const anyInterest = document.querySelector('input[name="interests"]:checked');
+  setError(interestsGroup.querySelector('.options'), !anyInterest);
+  if(!anyInterest) valid = false;
+
+  const consent = document.getElementById('consent');
+  const consentErr = document.getElementById('consentErr');
+  consentErr.classList.toggle('show', !consent.checked);
+  if(!consent.checked) valid = false;
+
+  if(!valid){
+    form.querySelector('.invalid, .errline.show')?.closest('.field')?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  // Save the lead so the organizer can retrieve responses later (shared storage)
+  try{
+    const data = new FormData(form);
+    const entry = {
+      fullName: data.get('fullName'),
+      email: data.get('email'),
+      phone: data.get('phone'),
+      location: data.get('location'),
+      inCanada: data.get('inCanada'),
+      interests: data.getAll('interests'),
+      commitment: data.get('commitment'),
+      experience: data.get('experience') || '',
+      availability: data.get('availability') || '',
+      notes: data.get('notes') || '',
+      submittedAt: new Date().toISOString()
+    };
+    if(window.storage){
+      await window.storage.set('lead:' + Date.now(), JSON.stringify(entry), true);
+    }
+  } catch(err){
+    console.error('Could not save lead', err);
+  }
+
+  ticket.classList.add('hide');
+  form.classList.add('hide');
+  confirmBox.classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+</body>
+</html>

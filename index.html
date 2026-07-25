@@ -422,6 +422,12 @@
       </div>
 
       <div class="field">
+        <label class="q" for="meetingTime">Pick an exact date &amp; time for your call<span class="req">*</span></label>
+        <input type="datetime-local" id="meetingTime" name="meetingTime" required>
+        <div class="errline">Please pick a date and time for your call.</div>
+      </div>
+
+      <div class="field">
         <label class="q" for="notes">Anything you'd like us to know?</label>
         <textarea id="notes" name="notes"></textarea>
       </div>
@@ -488,6 +494,13 @@ form.addEventListener('submit', async (e) => {
     if(!ok) valid = false;
   });
 
+  {
+    const el = document.getElementById('meetingTime');
+    const ok = el.value.trim().length > 0 && new Date(el.value) > new Date();
+    setError(el, !ok);
+    if(!ok) valid = false;
+  }
+
   ['inCanada','commitment'].forEach(name => {
     const group = document.querySelector(`[data-group="${name}"]`);
     const checked = document.querySelector(`input[name="${name}"]:checked`);
@@ -524,6 +537,7 @@ form.addEventListener('submit', async (e) => {
       commitment: data.get('commitment'),
       experience: data.get('experience') || '',
       availability: data.get('availability') || '',
+      meetingTime: data.get('meetingTime'),
       notes: data.get('notes') || '',
       submittedAt: new Date().toISOString()
     };

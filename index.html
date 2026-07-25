@@ -510,7 +510,8 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  // Save the lead so the organizer can retrieve responses later (shared storage)
+  // Send the lead to the Google Sheet via Apps Script web app
+  const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwQJ0UBGrOyEoEuEdEjbb4AFHvT-9Mx8VhAV299HurBhePLj6Ok9FZOn-2ljDaaD32P/exec';
   try{
     const data = new FormData(form);
     const entry = {
@@ -526,9 +527,12 @@ form.addEventListener('submit', async (e) => {
       notes: data.get('notes') || '',
       submittedAt: new Date().toISOString()
     };
-    if(window.storage){
-      await window.storage.set('lead:' + Date.now(), JSON.stringify(entry), true);
-    }
+    await fetch(SHEET_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors', // Apps Script doesn't return CORS headers; we don't need to read the response
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(entry)
+    });
   } catch(err){
     console.error('Could not save lead', err);
   }

@@ -424,6 +424,9 @@
       <div class="field">
         <label class="q" for="meetingTime">Pick an exact date &amp; time for your call<span class="req">*</span></label>
         <input type="datetime-local" id="meetingTime" name="meetingTime" required>
+        <div class="hint" id="meetingTimeHint" style="font-size:12.5px;color:#8892A0;margin-top:6px;">
+          Available: Mon 5–11pm · Tue 5–7pm &amp; 8:30–11pm · Wed 5–11pm · Thu 8:30–11pm · Fri 5–11pm · Sat 11am–11pm · Sun 9am–11pm
+        </div>
         <div class="errline">Please pick a date and time for your call.</div>
       </div>
 
@@ -475,6 +478,53 @@ document.querySelectorAll('.opt input').forEach(inp => {
   });
 });
 
+// ---- Availability schedule (organizer's local time, America/Toronto) ----
+// 0 = Sunday ... 6 = Saturday. Times in 24hr "HH:MM". Multiple windows allowed per day.
+const AVAILABILITY = {
+  0: [["09:00","23:00"]],                    // Sunday
+  1: [["17:00","23:00"]],                    // Monday
+  2: [["17:00","19:00"], ["20:30","23:00"]], // Tuesday
+  3: [["17:00","23:00"]],                    // Wednesday
+  4: [["20:30","23:00"]],                    // Thursday
+  5: [["17:00","23:00"]],                    // Friday
+  6: [["11:00","23:00"]],                    // Saturday
+};
+const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function isWithinAvailability(dateObj){
+  const day = dateObj.getDay();
+  const mins = dateObj.getHours() * 60 + dateObj.getMinutes();
+  const windows = AVAILABILITY[day] || [];
+  return windows.some(([start, end]) => {
+    const [sh, sm] = start.split(':').map(Number);
+    const [eh, em] = end.split(':').map(Number);
+    return mins >= (sh*60+sm) && mins <= (eh*60+em);
+  });
+}
+
+function checkMeetingTime(){
+  const el = document.getElementById('meetingTime');
+  const hint = document.getElementById('meetingTimeHint');
+  if(!el.value.trim()){ return false; }
+  const d = new Date(el.value);
+  if(!(d > new Date())){
+    hint.textContent = 'Please pick a time in the future.';
+    hint.style.color = '#C0392B';
+    return false;
+  }
+  if(!isWithinAvailability(d)){
+    hint.textContent = `Sorry, not available then. ${DAY_NAMES[d.getDay()]}'s hours: ` +
+      AVAILABILITY[d.getDay()].map(([s,e]) => `${s}–${e}`).join(', ');
+    hint.style.color = '#C0392B';
+    return false;
+  }
+  hint.textContent = 'Available: Mon 5–11pm · Tue 5–7pm & 8:30–11pm · Wed 5–11pm · Thu 8:30–11pm · Fri 5–11pm · Sat 11am–11pm · Sun 9am–11pm';
+  hint.style.color = '#8892A0';
+  return true;
+}
+
+document.getElementById('meetingTime').addEventListener('change', checkMeetingTime);
+
 function setError(el, show){
   const errline = el.parentElement.querySelector('.errline') || el.parentElement.parentElement.querySelector('.errline');
   if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
@@ -496,7 +546,7 @@ form.addEventListener('submit', async (e) => {
 
   {
     const el = document.getElementById('meetingTime');
-    const ok = el.value.trim().length > 0 && new Date(el.value) > new Date();
+    const ok = checkMeetingTime();
     setError(el, !ok);
     if(!ok) valid = false;
   }

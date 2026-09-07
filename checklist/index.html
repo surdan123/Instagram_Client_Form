@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is a Career in Financial Services Right for You? — Self-Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2438;
+    --navy-deep:#081826;
+    --teal:#1B4B5A;
+    --gold:#C9A227;
+    --gold-light:#E4C866;
+    --cream:#F7F5EF;
+    --slate:#4A5568;
+    --slate-light:#8892A0;
+    --line:#DCD8CC;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--navy);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 16px 80px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+
+  .ticket{
+    background:linear-gradient(155deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:var(--cream);
+    border-radius:18px;
+    padding:36px 32px 30px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 18px 40px -18px rgba(15,36,56,0.55);
+  }
+  .ticket::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 18% 30%, rgba(201,162,39,0.18), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(27,75,90,0.5), transparent 50%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold-light);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:rgba(228,200,102,0.35);}
+  .ticket h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(26px,5.2vw,34px);
+    line-height:1.1;
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+    position:relative;
+  }
+  .ticket p.lede{
+    font-size:15px;
+    line-height:1.55;
+    color:#C9D2DA;
+    max-width:48ch;
+    margin:0;
+    position:relative;
+  }
+
+  .notch{position:absolute;width:22px;height:22px;background:var(--cream);border-radius:50%;top:calc(100% - 11px);z-index:2;}
+  .notch.l{left:-11px;}
+  .notch.r{right:-11px;}
+
+  /* ---------- Gauge card ---------- */
+  .gauge-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    margin-top:28px;
+    padding:26px 24px 22px;
+    text-align:center;
+  }
+  .gauge-wrap{position:relative;width:220px;margin:0 auto;}
+  .gauge-score{
+    position:absolute;
+    left:0; right:0;
+    bottom:6px;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:34px;
+    color:var(--navy);
+  }
+  .gauge-total{font-family:'Inter',sans-serif;font-weight:500;font-size:14px;color:var(--slate-light);}
+  .gauge-label{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-top:10px;
+    transition:color .25s;
+  }
+  .gauge-sub{font-size:13.5px;color:var(--slate);margin-top:6px;line-height:1.5;}
+
+  /* ---------- Sections ---------- */
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    margin-top:18px;
+    padding:8px;
+  }
+  .section{padding:24px 22px;}
+  .section + .section{border-top:1px solid var(--line);}
+  .section-head{display:flex;align-items:baseline;gap:10px;margin-bottom:16px;}
+  .section-num{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:4px;
+    padding:1px 7px;
+  }
+  .section-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--navy);}
+
+  .items{display:flex;flex-direction:column;gap:8px;}
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    border:1.5px solid var(--line);
+    background:var(--cream);
+    border-radius:12px;
+    padding:13px 14px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+    user-select:none;
+  }
+  .item:hover{border-color:var(--gold-light);}
+  .item.checked{border-color:var(--gold);background:#fff;}
+  .box{
+    flex:none;
+    width:20px;height:20px;
+    border-radius:5px;
+    border:1.5px solid var(--slate-light);
+    background:#fff;
+    margin-top:1px;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s, border-color .15s;
+  }
+  .item.checked .box{background:var(--gold);border-color:var(--gold);}
+  .box svg{width:12px;height:12px;opacity:0;transform:scale(.6);transition:opacity .12s, transform .12s;}
+  .item.checked .box svg{opacity:1;transform:scale(1);}
+  .item span{font-size:14.5px;line-height:1.45;color:var(--navy);}
+
+  /* ---------- Result + CTA ---------- */
+  .result{
+    background:linear-gradient(155deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:var(--cream);
+    border-radius:18px;
+    margin-top:18px;
+    padding:26px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .result::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:radial-gradient(circle at 80% 20%, rgba(201,162,39,0.22), transparent 50%);
+    pointer-events:none;
+  }
+  .result h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0 0 8px;
+    position:relative;
+  }
+  .result p{
+    font-size:14px;
+    line-height:1.55;
+    color:#C9D2DA;
+    max-width:44ch;
+    margin:0 auto 18px;
+    position:relative;
+  }
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--gold);
+    color:var(--navy-deep);
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    text-decoration:none;
+    padding:13px 26px;
+    border-radius:100px;
+    position:relative;
+    transition:background .15s, transform .1s;
+  }
+  .cta:hover{background:var(--gold-light);}
+  .cta:active{transform:scale(.98);}
+  .footnote{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--slate-light);
+    margin-top:18px;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="ticket">
+    <div class="eyebrow">Free self-assessment</div>
+    <h1>Is a career in financial services right for you?</h1>
+    <p class="lede">Tap through 13 quick statements. Watch your readiness gauge move as you go, then see where you land.</p>
+    <div class="notch l"></div>
+    <div class="notch r"></div>
+  </div>
+
+  <div class="gauge-card">
+    <div class="gauge-wrap">
+      <svg viewBox="0 0 220 130" width="220" height="130">
+        <path d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="#EDEAE0" stroke-width="16" stroke-linecap="round"/>
+        <path id="gaugeArc" d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="#C9A227" stroke-width="16" stroke-linecap="round"
+              stroke-dasharray="283" stroke-dashoffset="283"/>
+        <g id="needle" style="transform-origin:110px 120px; transform:rotate(-90deg); transition:transform .35s cubic-bezier(.34,1.56,.64,1);">
+          <line x1="110" y1="120" x2="110" y2="45" stroke="#0F2438" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="110" cy="120" r="6" fill="#0F2438"/>
+        </g>
+      </svg>
+      <div class="gauge-score"><span id="scoreNum">0</span><span class="gauge-total"> / 13</span></div>
+    </div>
+    <div class="gauge-label" id="gaugeLabel">Get started below</div>
+    <div class="gauge-sub" id="gaugeSub">Check off any statement that's true for you.</div>
+  </div>
+
+  <div class="card">
+    <div class="section">
+      <div class="section-head"><span class="section-num">01</span><span class="section-title">Your motivation</span></div>
+      <div class="items" data-group="motivation">
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I want an additional income opportunity, part-time or full-time.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I'm open to a career change, even if it means starting something new.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I want to build financial knowledge for myself and my family.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I'm interested in eventually owning my own business or team.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I like the idea of helping other families with their finances.</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><span class="section-num">02</span><span class="section-title">Your availability &amp; commitment</span></div>
+      <div class="items" data-group="availability">
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I can commit a few hours a week to training, even while working another job.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I'm willing to attend meetings, calls, and ongoing learning sessions.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I'm comfortable being coached and following a mentor's guidance at first.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I understand licensing takes real study time — it's not instant.</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><span class="section-num">03</span><span class="section-title">Your mindset</span></div>
+      <div class="items" data-group="mindset">
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I'm okay with a learning curve and slow early progress.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I can handle hearing "no" sometimes without giving up.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I prefer being paid based on effort and results, not a fixed hourly wage.</span></div>
+        <div class="item" data-pts="1"><div class="box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0F2438" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>I'm curious rather than skeptical — I'd rather learn more before deciding.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result">
+    <h2 id="resultTitle">Check a few boxes to see your result</h2>
+    <p id="resultBody">Your personal readiness summary and next step will appear here as you go.</p>
+    <a class="cta" id="ctaBtn" href="https://surdan123.github.io/Instagram_Client_Form/" target="_blank" rel="noopener">Reserve your info session &nbsp;&rarr;</a>
+  </div>
+
+  <div class="footnote">This is educational content about a licensed financial-services opportunity. It does not constitute financial advice, and completing it creates no obligation to join, purchase any products, or enter into a business relationship.</div>
+
+</div>
+
+<script>
+  const items = document.querySelectorAll('.item');
+  const total = items.length;
+  const scoreNum = document.getElementById('scoreNum');
+  const gaugeArc = document.getElementById('gaugeArc');
+  const needle = document.getElementById('needle');
+  const gaugeLabel = document.getElementById('gaugeLabel');
+  const gaugeSub = document.getElementById('gaugeSub');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultBody = document.getElementById('resultBody');
+
+  const ARC_LENGTH = 283;
+
+  items.forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('checked');
+      update();
+    });
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        el.classList.toggle('checked');
+        update();
+      }
+    });
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'checkbox');
+    el.setAttribute('aria-checked', 'false');
+  });
+
+  function update(){
+    const checked = document.querySelectorAll('.item.checked').length;
+    scoreNum.textContent = checked;
+
+    const pct = checked / total;
+    gaugeArc.setAttribute('stroke-dashoffset', ARC_LENGTH - (ARC_LENGTH * pct));
+
+    const angle = -90 + (pct * 180);
+    needle.style.transform = `rotate(${angle}deg)`;
+
+    items.forEach(el => el.setAttribute('aria-checked', el.classList.contains('checked') ? 'true' : 'false'));
+
+    if(checked === 0){
+      gaugeLabel.textContent = 'Get started below';
+      gaugeLabel.style.color = 'var(--gold)';
+      gaugeSub.textContent = "Check off any statement that's true for you.";
+      resultTitle.textContent = 'Check a few boxes to see your result';
+      resultBody.textContent = 'Your personal readiness summary and next step will appear here as you go.';
+    } else if(checked <= 4){
+      gaugeLabel.textContent = 'Just exploring';
+      gaugeLabel.style.color = 'var(--slate)';
+      gaugeSub.textContent = "This may not be the right season for you, and that's okay.";
+      resultTitle.textContent = "This might not be the right season, and that's okay";
+      resultBody.textContent = 'No pressure at all. Bookmark this if your circumstances change, or reach out with any questions.';
+    } else if(checked <= 8){
+      gaugeLabel.textContent = 'Worth a conversation';
+      gaugeLabel.style.color = 'var(--teal)';
+      gaugeSub.textContent = "There's enough overlap here to be worth a chat.";
+      resultTitle.textContent = 'Worth a short conversation';
+      resultBody.textContent = 'You checked enough boxes that it could make sense — a free info session is a low-pressure way to see if the timing and fit are right.';
+    } else {
+      gaugeLabel.textContent = 'Strong fit';
+      gaugeLabel.style.color = 'var(--gold)';
+      gaugeSub.textContent = "This looks like a strong match for what you're looking for.";
+      resultTitle.textContent = "You're a strong fit — let's talk";
+      resultBody.textContent = 'Based on what you checked, this could be a great next step. Reserve a spot at a free, no-obligation info session to learn more.';
+    }
+  }
+
+  update();
+</script>
+</body>
+</html>
